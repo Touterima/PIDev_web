@@ -1,0 +1,84 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Produit Index{% endblock %}
+
+{% block body %}
+    <h1>Produit Index</h1>
+
+    <form class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by ID, Nom, Prix, or Categorie">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="searchButton">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="{{ path('app_produit_back_new') }}" class="btn btn-success">Create New</a>
+
+    {% if produits is not empty %}
+        <table class="table" id="produitTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Image</th>
+                    <th>Prix</th>
+                    <th>Categorie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.id }}</td>
+                        <td>{{ produit.nom }}</td>
+                        <td>{{ produit.imagefile }}</td>
+                        <td>{{ produit.prix }}</td>
+                        <td>{{ produit.categorie }}</td>
+                        <td>
+                            <a href="{{ path('app_produit_back_show', {'id': produit.id}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('app_produit_back_edit', {'id': produit.id}) }}" class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const table = document.getElementById('produitTable');
+            const rows = table.getElementsByTagName('tr');
+
+            searchButton.addEventListener('click', function () {
+                const searchText = searchInput.value.toLowerCase();
+
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    let found = false;
+
+                    for (let j = 0; j < row.cells.length; j++) {
+                        const cell = row.cells[j];
+                        const cellText = cell.textContent.toLowerCase();
+
+                        if (cellText.includes(searchText)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

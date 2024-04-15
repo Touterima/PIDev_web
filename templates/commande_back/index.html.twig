@@ -1,0 +1,63 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Commande Index{% endblock %}
+
+{% block body %}
+    <h1>Commande Index</h1>
+
+    <div class="form-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+    </div>
+
+    {% if commandes is not empty %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User ID</th>
+                    <th>Product ID</th>
+                    <th>Quantity</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="commandeTableBody">
+                {% for commande in commandes %}
+                    <tr>
+                        <td>{{ commande.id }}</td>
+                        <td>{{ commande.idUser }}</td>
+                        <td>{{ commande.idProduit }}</td>
+                        <td>{{ commande.quantity }}</td>
+                        <td>{{ commande.datecreation ? commande.datecreation|date('Y-m-d') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_commande_back_show', {'id': commande.id}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('app_commande_back_edit', {'id': commande.id}) }}" class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+
+    <a href="{{ path('app_commande_back_new') }}" class="btn btn-success">Create New</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const tableBody = document.getElementById('commandeTableBody');
+
+            searchInput.addEventListener('input', function () {
+                const searchQuery = searchInput.value.trim().toLowerCase();
+
+                Array.from(tableBody.children).forEach(row => {
+                    const textContent = row.textContent.toLowerCase();
+                    row.style.display = textContent.includes(searchQuery) ? '' : 'none';
+                });
+            });
+        });
+    </script>
+{% endblock %}

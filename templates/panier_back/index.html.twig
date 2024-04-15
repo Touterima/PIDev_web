@@ -1,0 +1,97 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Panier Index{% endblock %}
+
+{% block body %}
+    <h1>Panier Index</h1>
+
+    <form class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by ID, Total, Date Panier, Etat, or User ID">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="searchButton">Search</button>
+            </div>
+        </div>
+    </form>
+
+    {% if paniers is not empty %}
+        <table class="table" id="panierTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Total</th>
+                    <th>Date Panier</th>
+                    <th>Etat</th>
+                    <th>User ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for panier in paniers %}
+                    <tr>
+                        <td>{{ panier.id }}</td>
+                        <td>{{ panier.total }}</td>
+                        <td>{{ panier.datepanier ? panier.datepanier|date('Y-m-d') : '' }}</td>
+                        <td>{{ panier.etat }}</td>
+                        <td>{{ panier.idUser }}</td>
+                        <td>
+                            <a href="{{ path('app_panier_back_show', {'id': panier.id}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('app_panier_back_edit', {'id': panier.id}) }}" class="btn btn-warning">Edit</a>
+                            {% if panier.etat != 'Approver' %}
+                                <a href="{{ path('app_panier_change_etat', {'id': panier.id}) }}" class="btn btn-info change-state-btn">Accepter</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+
+    <a href="{{ path('app_panier_back_new') }}" class="btn btn-success">Create New</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const table = document.getElementById('panierTable');
+            const rows = table.getElementsByTagName('tr');
+
+            searchButton.addEventListener('click', function () {
+                const searchText = searchInput.value.toLowerCase();
+
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    let found = false;
+
+                    for (let j = 0; j < row.cells.length; j++) {
+                        const cell = row.cells[j];
+                        const cellText = cell.textContent.toLowerCase();
+
+                        if (cellText.includes(searchText)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            // Add event listener for change state button
+            const changeStateButtons = document.querySelectorAll('.change-state-btn');
+            changeStateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const panierId = this.getAttribute('data-id');
+                    // You can add your logic here to change the state of the panier with the given ID
+                    console.log('Change state button clicked for panier ID:', panierId);
+                });
+            });
+        });
+    </script>
+{% endblock %}

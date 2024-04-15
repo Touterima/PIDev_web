@@ -1,0 +1,41 @@
+{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+<div class="form-group">
+    {{ form_label(form.idUser, 'ID User', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.idUser, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.idUser) }} {# Add this line to display error messages #}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.idProduit, 'ID Produit', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.idProduit, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.idProduit) }} {# Add this line to display error messages #}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.quantity, 'Quantity', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.quantity) }} {# Add this line to display error messages #}
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.datecreation, 'Date Creation', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.datecreation, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.datecreation) }} {# Add this line to display error messages #}
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}
