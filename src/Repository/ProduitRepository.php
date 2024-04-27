@@ -21,4 +21,23 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
+        /*
+    public function findByCriteria($nom, $categorie)
+{
+    $qb = $this->createQueryBuilder('p');
+
+    if ($nom) {
+        $qb->andWhere('p.nom LIKE :nom')
+           ->setParameter('nom', '%' . $nom . '%');
+    }
+
+    if ($categorie) {
+        $qb->andWhere('p.categorie = :categorie')
+           ->setParameter('categorie', $categorie);
+    }
+
+    return $qb->getQuery()->getResult();
+}
+*/
+
 }

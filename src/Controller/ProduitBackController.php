@@ -21,6 +21,25 @@ class ProduitBackController extends AbstractController
             'produits' => $produitRepository->findAll(),
         ]);
     }
+    
+    /*
+    public function findByCriteria($nom, $categorie)
+{
+    $qb = $this->createQueryBuilder('p');
+
+    if ($nom) {
+        $qb->andWhere('p.nom LIKE :nom')
+           ->setParameter('nom', '%' . $nom . '%');
+    }
+
+    if ($categorie) {
+        $qb->andWhere('p.categorie = :categorie')
+           ->setParameter('categorie', $categorie);
+    }
+
+    return $qb->getQuery()->getResult();
+}
+*/
 
     #[Route('/new', name: 'app_produit_back_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
