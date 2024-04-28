@@ -1,6 +1,7 @@
-{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+{{ form_start(form, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
     <div class="form-group">
-        {{ form_label(form.total, 'Total', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+        <!-- {{ form_label(form.total, 'Total', {'label_attr': {'class': 'col-sm-2 control-label'}}) }} -->
+        <label for="inputText" class="control-label col-md-2">Total</label>
         <div class="col-sm-10">
             {{ form_widget(form.total, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.total) }}
@@ -8,7 +9,8 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.datepanier, 'Date Panier', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+       <!-- {{ form_label(form.datepanier, 'Date Panier', {'label_attr': {'class': 'col-sm-2 control-label'}}) }} -->
+        <label for="inputText" class="control-label col-md-2">Date Panier</label>
         <div class="col-sm-10">
             {{ form_widget(form.datepanier, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.datepanier) }}
@@ -16,7 +18,8 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.etat, 'Etat', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+       <!-- {{ form_label(form.etat, 'Etat', {'label_attr': {'class': 'col-sm-2 control-label'}}) }} -->
+       <label for="inputText" class="control-label col-md-2">Etat</label>
         <div class="col-sm-10">
             {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.etat) }}
@@ -24,7 +27,8 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.idUser, 'ID User', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+       <!-- {{ form_label(form.idUser, 'ID User', {'label_attr': {'class': 'col-sm-2 control-label'}}) }} -->
+       <label for="inputText" class="control-label col-md-2">ID User</label>
         <div class="col-sm-10">
             {{ form_widget(form.idUser, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.idUser) }}
