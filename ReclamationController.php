@@ -12,6 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface; // Import Mailer
+use Symfony\Component\Mime\Email; // Import Email class
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
@@ -25,7 +31,7 @@ class ReclamationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $reclamation = new Reclamation();
         $form = $this->createForm(ReclamationType::class, $reclamation);
@@ -35,6 +41,8 @@ class ReclamationController extends AbstractController
             $entityManager->persist($reclamation);
             $entityManager->flush();
 
+            $this->sendEmail("belhaje.kamel@esprit.tn", "New Reclamation Created", "A new reclamation has been created");
+
             return $this->redirectToRoute('app_reclamation_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -43,6 +51,24 @@ class ReclamationController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    function sendEmail($recipientEmail, $subject, $message)
+    {
+        $transport = new EsmtpTransport('smtp.gmail.com', 587);
+        $transport->setUsername("mehergames29@gmail.com");
+        $transport->setPassword("nszgqaynqpetuucj");
+    
+        $mailer = new Mailer($transport);
+    
+        $email = (new Email())
+            ->from("pidev@gmail.com")
+            ->to($recipientEmail)
+            ->subject($subject)
+            ->text($message);
+    
+        $mailer->send($email);
+    }
+
 
     #[Route('/{requestId}', name: 'app_reclamation_show', methods: ['GET'])]
     public function show(Reclamation $reclamation, ReponseRepository $reponseRepository): Response

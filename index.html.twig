@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat with Our Chatbot{% endblock %}
+
+{% block body %}
+<style>
+    .chat-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+    .chat-messages {
+        background: #F5F5F5;
+        border: 1px solid #ddd;
+        padding: 10px;
+        height: 400px;
+        overflow-y: auto;
+    }
+    .chat-message {
+        margin-bottom: 1em;
+    }
+    .chat-message.user {
+        text-align: right;
+    }
+    .chat-input {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .chat-input input {
+        flex-grow: 1;
+        padding: 10px;
+    }
+    .chat-input button {
+        padding: 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .chat-input button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="chat-wrapper">
+    <h1>Chat with Our Bot!</h1>
+    <div class="chat-messages" id="chatMessages">
+        <!-- This section will be dynamically populated with chat messages -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your message..." />
+        <button id="sendButton">Send</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('sendButton').addEventListener('click', function() {
+        let inputField = document.getElementById('userInput');
+        let userMessage = inputField.value.trim();
+
+        if (userMessage !== '') {
+            let chatMessages = document.getElementById('chatMessages');
+
+            // Add the user's message to the chat
+            let userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user';
+            userMessageDiv.textContent = userMessage;
+            chatMessages.appendChild(userMessageDiv);
+
+            // Clear the input field after sending the message
+            inputField.value = '';
+
+            // Here, you would add code to process the user's message and get a response from the chatbot
+            // For now, let's simulate a chatbot response
+            setTimeout(() => {
+                let botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message';
+                botMessageDiv.textContent = handleReclamation(userMessage);
+                chatMessages.appendChild(botMessageDiv);
+
+                // Scroll to the bottom to see the latest messages
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000); // Simulate a delay in response
+        }
+    });
+
+    function handleReclamation(userMessage) {
+        // Simulate a basic response for reclamation
+        if (userMessage.toLowerCase().includes('refund')) {
+            return 'I see that you would like a refund. Could you please provide your order number and the reason for the refund?';
+        } else if (userMessage.toLowerCase().includes('late') || userMessage.toLowerCase().includes('delay')) {
+            return 'Sorry to hear about the delay. Could you share the tracking number for your shipment, and we will look into it?';
+        } else if (userMessage.toLowerCase().includes('damage')) {
+            return 'We are sorry that your item was damaged. Could you provide photos of the damage and your order number for further assistance?';
+        } else {
+            return 'Thank you for reaching out. Could you tell us more about your complaint so we can assist you better?';
+        }
+    }
+
+    // Optional: Send message when pressing Enter
+    document.getElementById('userInput').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('sendButton').click();
+        }
+    });
+</script>
+{% endblock %}
