@@ -1,0 +1,74 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Nutrition index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-4 mb-4">Nutrition Index</h1>
+
+    {# Search Form #}
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by meal or details">
+    </div>
+
+    <div class="table-responsive">
+        <table id="nutritionTable" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">NutritionId</th>
+                    <th scope="col">Meal</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for nutrition in nutrition %}
+                <tr>
+                    <td>{{ nutrition.nutritionId }}</td>
+                    <td>{{ nutrition.meal }}</td>
+                    <td>{{ nutrition.details }}</td>
+                    <td>
+                        <a href="{{ path('app_nutrition_back_show', {'nutritionId': nutrition.nutritionId}) }}" class="btn btn-sm btn-primary mr-1">Show</a>
+                        <a href="{{ path('app_nutrition_back_edit', {'nutritionId': nutrition.nutritionId}) }}" class="btn btn-sm btn-info">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_nutrition_back_new') }}" class="btn btn-success">Create New</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('searchInput');
+        const nutritionTable = document.getElementById('nutritionTable');
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value.trim().toLowerCase();
+            const rows = nutritionTable.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const columns = row.getElementsByTagName('td');
+                let found = false;
+                for (let column of columns) {
+                    if (column.textContent.toLowerCase().includes(searchValue)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

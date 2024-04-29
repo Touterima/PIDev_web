@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h2>Today's Challenges</h2>
+        
+        <div class="row">
+            {% for challenge in dailyChallenges %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100"> {# Bootstrap card component #}
+                        <div class="card-body">
+                            <h4 class="card-title">{{ challenge.nom }}</h4>
+                            <p class="card-text">{{ challenge.description }}</p>
+                        </div>
+                        <div class="card-footer"> {# Footer for additional content #}
+                        <a href="{{ path('app_exercice_nutrition', {'exerciceId': challenge.exerciceId}) }}" class="card-link">Check Nutrition</a>
+                                Info
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

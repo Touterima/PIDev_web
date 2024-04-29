@@ -1,0 +1,80 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Exercice index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-4 mb-4">Exercice</h1>
+
+    {# Search Form #}
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by description, nom, or duree">
+    </div>
+
+    <div class="table-responsive">
+        <table id="exerciceTable" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ExerciceId</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">NombreDeFois</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Duree</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for exercice in exercices %}
+                <tr>
+                    <td>{{ exercice.exerciceId }}</td>
+                    <td>{{ exercice.description }}</td>
+                    <td>{{ exercice.nombreDeFois }}</td>
+                    <td>{{ exercice.nom }}</td>
+                    <td>{{ exercice.duree }}</td>
+                    <td>{{ exercice.image }}</td>
+                    <td>
+                        <a href="{{ path('app_exercice_back_show', {'exerciceId': exercice.exerciceId}) }}" class="btn btn-sm btn-primary mr-1">Show</a>
+                        <a href="{{ path('app_exercice_back_edit', {'exerciceId': exercice.exerciceId}) }}" class="btn btn-sm btn-info">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_exercice_back_new') }}" class="btn btn-success">Create New</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('searchInput');
+        const exerciceTable = document.getElementById('exerciceTable');
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value.trim().toLowerCase();
+            const rows = exerciceTable.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const columns = row.getElementsByTagName('td');
+                let found = false;
+                for (let column of columns) {
+                    if (column.textContent.toLowerCase().includes(searchValue)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

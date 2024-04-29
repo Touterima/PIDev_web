@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nutrition index{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% for nutrition in nutrition %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ nutrition.meal }}</h5>
+                        <p class="card-text">{{ nutrition.details }}</p>
+                    </div>
+                    <div class="card-footer">
+                 </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-info" role="alert">
+                    No records found.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}  {# Disables HTML form validation #}
+    <div class="form-group">
+        {{ form_label(form.meal) }}
+        {{ form_widget(form.meal, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.meal) }} {# Add this line to display errors for the meal field #}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.details) }}
+        {{ form_widget(form.details, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.details) }} {# Add this line to display errors for the details field #}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.exercice) }}
+        {{ form_widget(form.exercice, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.exercice) }} {# Add this line to display errors for the exercice field #}
+    </div>
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

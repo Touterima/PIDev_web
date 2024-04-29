@@ -1,0 +1,35 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Nutrition{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-4 mb-4">Nutrition</h1>
+
+    <div class="table-responsive">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">NutritionId</th>
+                    <td>{{ nutrition.nutritionId }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Meal</th>
+                    <td>{{ nutrition.meal }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Details</th>
+                    <td>{{ nutrition.details }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mb-3">
+        <a href="{{ path('app_nutrition_back_index') }}" class="btn btn-secondary">Back to List</a>
+        <a href="{{ path('app_nutrition_back_edit', {'nutritionId': nutrition.nutritionId}) }}" class="btn btn-primary">Edit</a>
+    </div>
+
+    {{ include('nutrition_back/_delete_form.html.twig') }}
+</div>
+{% endblock %}

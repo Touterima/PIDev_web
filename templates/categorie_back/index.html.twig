@@ -1,0 +1,68 @@
+{% extends 'baseback.html.twig' %}
+
+{% block title %}Categorie index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-4 mb-4">Categorie Index</h1>
+
+    {# Search Form #}
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name">
+    </div>
+
+    <div class="table-responsive">
+        <table id="categorieTable" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">CategorieId</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie.categorieId }}</td>
+                    <td>{{ categorie.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_categorie_back_show', {'categorieId': categorie.categorieId}) }}" class="btn btn-sm btn-primary mr-1">Show</a>
+                        <a href="{{ path('app_categorie_back_edit', {'categorieId': categorie.categorieId}) }}" class="btn btn-sm btn-info">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ path('app_categorie_back_new') }}" class="btn btn-success">Create New</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('searchInput');
+        const categorieTable = document.getElementById('categorieTable');
+
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value.trim().toLowerCase();
+            const rows = categorieTable.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const nomColumn = row.getElementsByTagName('td')[1];
+                if (nomColumn) {
+                    const content = nomColumn.textContent || nomColumn.innerText;
+                    if (content.toLowerCase().includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

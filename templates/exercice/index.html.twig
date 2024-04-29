@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exercice Index{% endblock %}
+
+{% block body %}
+<div class="row">
+    {% for exercice in exercices %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ asset('uploads/' ~ exercice.image) }}" class="card-img-top" alt="Exercise Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ exercice.nom }}</h5>
+                    <p class="card-text">{{ exercice.description }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Exercice ID: {{ exercice.exerciceId }}</li>
+                    <li class="list-group-item">Nombre de Fois: {{ exercice.nombreDeFois }}</li>
+                    <li class="list-group-item">Durée: {{ exercice.duree }}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="{{ path('app_exercice_nutrition', {'exerciceId': exercice.exerciceId}) }}" class="card-link">Check Nutrition</a>
+                    
+                    {# Share on Social Media #}
+                    <div class="share-buttons">
+                        {# Facebook Share #}
+                        <a 
+                            href="https://www.facebook.com/sharer/sharer.php?u={{ url('app_exercice_back_show', {'exerciceId': exercice.exerciceId}) }}" 
+                            target="_blank" 
+                            class="btn btn-primary">
+                            Share on Facebook
+                        </a>
+
+                        {# Twitter Share #}
+                        <a 
+                            href="https://twitter.com/intent/tweet?text=Check out this exercice!&url={{ url('app_exercice_back_show', {'exerciceId': exercice.exerciceId}) }}" 
+                            target="_blank" 
+                            class="btn btn-info">
+                            Share on Twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-md-12">
+            <p>No records found.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Exercise Recommendations</h2>
+    <p>Weight: {{ weight }} kg</p>
+    <p>Height: {{ height }} cm</p>
+    <p>BMI: {{ bmi|number_format(2) }}</p>
+
+    <h3>Suggested</h3>
+    <ul>
+        {% for category in categories %}
+            <li>
+                {{ category.nom }} 
+                <a href="{{ path('app_categorie_back_show', { 'categorieId': category.getCategorieId() }) }}" class="btn btn-primary">
+                    Go to Category
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
