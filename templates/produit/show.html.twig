@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h1 class="mb-4">Produit Details</h1>
+                <a href="{{ path('app_produit_index') }}" class="btn btn-secondary mb-4">Back to List</a>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 150px;">ID</th>
+                                    <td>{{ produit.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom</th>
+                                    <td>{{ produit.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Image</th>
+                                    <td><img src="{{ asset('uploads/' ~ produit.imagefile) }}" alt="{{ produit.nom }}" style="max-width: 200px;"></td>
+                                </tr>
+                                <tr>
+                                    <th>Prix</th>
+                                    <td>{{ produit.prix }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <td>{{ produit.categorie }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

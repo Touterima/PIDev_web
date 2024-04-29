@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit Index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Produits</h1>
+
+    {% if produits is not empty %}
+        <div class="row">
+            {% for produit in produits %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ asset('uploads/' ~ produit.imagefile) }}" class="card-img-top" alt="{{ produit.nom }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ produit.nom }}</h5>
+                            <p class="card-text">Prix: {{ produit.prix }}</p>
+                            <p class="card-text">Catégorie: {{ produit.categorie }}</p>
+
+                            {# Display the product's average rating as stars #}
+                            <div class="product-rating">
+                                {# Calculate the number of filled and empty stars #}
+                                {% set full_stars = produit.rating | round(0, 'floor') %}
+                                {% set half_star = produit.rating - full_stars >= 0.5 %}
+                                {% set empty_stars = 5 - full_stars - (half_star ? 1 : 0) %}
+
+                                {# Show full stars #}
+                                {% for i in 1..full_stars %}
+                                    ★
+                                {% endfor %}
+
+                                {# Show half star if applicable #}
+                                {% if half_star %}
+                                    ☆
+                                {% endif %}
+
+                                {# Show empty stars #}
+                                {% for i in 1..empty_stars %}
+                                    ☆
+                                {% endfor %}
+
+                                <span class="text-muted">({{ produit.ratingCount }} reviews)</span>
+                            </div>
+
+                            {# Provide a form to submit a new rating #}
+                            <form action="{{ path('submit_rating', {'productId': produit.id}) }}" method="post">
+                                <div class="form-group">
+                                    <label for="rating">Rate this product:</label>
+                                    <select name="rating" id="rating" class="form-control">
+                                        <option value="1">1 Star</option>
+                                        <option value="2">2 Stars</option>
+                                        <option value="3">3 Stars</option>
+                                        <option value="4">4 Stars</option>
+                                        <option value="5">5 Stars</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-secondary">Submit Rating</button>
+                            </form>
+
+                            <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-primary">Show</a>
+                            <form action="{{ path('add_to_cart') }}" method="post">
+                                <input type="hidden" name="product_id" value="{{ produit.id }}">
+                                <button type="submit" class="btn btn-success">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+</div>
+{% endblock %}

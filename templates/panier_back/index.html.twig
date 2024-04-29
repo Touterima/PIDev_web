@@ -1,0 +1,100 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Panier Index{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Panier Index</h1>
+        <a href="{{ path('app_panier_back_new') }}" class="btn btn-success">Create New</a>
+    </div>
+
+    <div class="form-group mb-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="Global Search...">
+    </div>
+
+    {% if paniers is not empty %}
+        <table class="table table-striped" id="panierTable"> {# Added striped styling #}
+            <thead class="thead-dark"> {# Darker header for better contrast #}
+                <tr>
+                    <th>ID</th>
+                    <th>Total</th>
+                    <th>Date Panier</th>
+                    <th>Etat</th>
+                    <th>User ID</th>
+                    <th>Actions</th>
+                </tr>
+                <tr> {# Filter row with input fields for each column #}
+                    <td><input type="text" class="form-control" id="filterId" placeholder="Filter by ID"></td>
+                    <td><input type="text" class="form-control" id="filterTotal" placeholder="Filter by Total"></td>
+                    <td><input type="text" class="form-control" id="filterDatePanier" placeholder="Filter by Date Panier"></td>
+                    <td><input type="text" class="form-control" id="filterEtat" placeholder="Filter by Etat"></td>
+                    <td><input type="text" class="form-control" id="filterUserId" placeholder="Filter by User ID"></td>
+                    <td></td> {# No action filter #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for panier in paniers %}
+                    <tr>
+                        <td>{{ panier.id }}</td>
+                        <td>{{ panier.total }}</td>
+                        <td>{{ panier.datepanier ? panier.datepanier|date('Y-m-d') : '' }}</td>
+                        <td>{{ panier.etat }}</td>
+                        <td>{{ panier.idUser }}</td>
+                        <td>
+                            <a href="{{ path('app_panier_back_show', {'id': panier.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                            <a href="{{ path('app_panier_back_edit', {'id': panier.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                            {% if panier.etat != 'Approver' %}
+                                <a href="{{ path('app_panier_change_etat', {'id': panier.id}) }}" class="btn btn-info btn-sm change-state-btn">Accepter</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">No records found.</div> {# Display alert when no records are found #}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.getElementById('panierTable').getElementsByTagName('tbody')[0];
+
+        const filters = {
+            id: document.getElementById('filterId'),
+            total: document.getElementById('filterTotal'),
+            datePanier: document.getElementById('filterDatePanier'),
+            etat: document.getElementById('filterEtat'),
+            userId: document.getElementById('filterUserId')
+        };
+
+        const filterTable = () => {
+            Array.from(tableBody.children).forEach(row => {
+                const idText = row.children[0].textContent.toLowerCase();
+                const totalText = row.children[1].textContent.toLowerCase();
+                const datePanierText = row.children[2].textContent.toLowerCase();
+                const etatText = row.children[3].textContent.toLowerCase();
+                const userIdText = row.children[4].textContent.toLowerCase();
+
+                const matchesId = idText.includes(filters.id.value.toLowerCase());
+                const matchesTotal = totalText.includes(filters.total.value.toLowerCase());
+                const matchesDatePanier = datePanierText.includes(filters.datePanier.value.toLowerCase());
+                const matchesEtat = etatText.includes(filters.etat.value.toLowerCase());
+                const matchesUserId = userIdText.includes(filters.userId.value.toLowerCase());
+
+                const matches = matchesId && matchesTotal && matchesDatePanier && matchesEtat && matchesUserId;
+
+                row.style.display = matches ? '' : 'none';
+            });
+        };
+
+        // Apply filter when the input field changes
+        Object.values(filters).forEach(filter => {
+            filter.addEventListener('input', filterTable);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Produit Index{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Produit Index</h1>
+        <a href="{{ path('app_produit_back_new') }}" class="btn btn-success">Create New</a>
+    </div>
+
+    {% if produits is not empty %}
+        <table class="table table-striped" id="produitTable"> {# Added striped styling #}
+            <thead class="thead-dark"> {# Darker header background for better contrast #}
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Image</th>
+                    <th>Prix</th>
+                    <th>Categorie</th>
+                    <th>Actions</th>
+                </tr>
+                <tr> {# Filter row with input fields for each column #}
+                    <td><input type="text" class="form-control" id="filterId" placeholder="Filter by ID"></td>
+                    <td><input type="text" class="form-control" id="filterNom" placeholder="Filter by Nom"></td>
+                    <td><input type="text" class="form-control" id="filterImage" placeholder="Filter by Image"></td>
+                    <td><input type="text" class="form-control" id="filterPrix" placeholder="Filter by Prix"></td>
+                    <td><input type="text" class="form-control" id="filterCategorie" placeholder="Filter by Categorie"></td>
+                    <td></td> {# No action filter #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit.id }}</td>
+                        <td>{{ produit.nom }}</td>
+                        <td><img src="{{ asset('uploads/' ~ produit.imagefile) }}" alt="{{ produit.nom }}" class="img-thumbnail" style="width: 50px;"></td>
+                        <td>{{ produit.prix }}</td>
+                        <td>{{ produit.categorie }}</td>
+                        <td>
+                            <a href="{{ path('app_produit_back_show', {'id': produit.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                            <a href="{{ path('app_produit_back_edit', {'id': produit.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">No records found.</div> {# Display alert when no records are found #}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.getElementById('produitTable').getElementsByTagName('tbody')[0];
+
+        const filters = {
+            id: document.getElementById('filterId'),
+            nom: document.getElementById('filterNom'),
+            image: document.getElementById('filterImage'),
+            prix: document.getElementById('filterPrix'),
+            categorie: document.getElementById('filterCategorie')
+        };
+
+        const filterTable = () => {
+            Array.from(tableBody.children).forEach(row => {
+                const idText = row.children[0].textContent.toLowerCase();
+                const nomText = row.children[1].textContent.toLowerCase();
+                const prixText = row.children[3].textContent.toLowerCase();
+                const categorieText = row.children[4].textContent.toLowerCase();
+
+                const matchesId = idText.includes(filters.id.value.toLowerCase());
+                const matchesNom = nomText.includes(filters.nom.value.toLowerCase());
+                const matchesPrix = prixText.includes(filters.prix.value.toLowerCase());
+                const matchesCategorie = categorieText.includes(filters.categorie.value.toLowerCase());
+
+                row.style.display = (matchesId && matchesNom && matchesPrix && matchesCategorie) ? '' : 'none';
+            });
+        };
+
+        Object.values(filters).forEach(filter => {
+            filter.addEventListener('input', filterTable); // Trigger filter on input change
+        });
+    });
+</script>
+{% endblock %}
